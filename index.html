@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Todo List Application</title>
+    <link rel="stylesheet" href="index.css" type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+  </head>
+  <body>
+    <h1>Workshop Todo List</h1>
+
+    <table>
+      <tr>
+        <td>feed the dog</td>
+        <td>3 poms</td>
+        <td><input type="checkbox" onclick="markdone(this)"></td>
+      </tr>
+      <tr>
+        <td>take the garbage out</td>
+        <td>4 poms</td>
+        <td><input type="checkbox" onclick="markdone(this)"></td>
+      </tr>
+    </table>
+    
+    <p>
+      <button onclick="addtodo()">Add todo</button>
+    </p>
+</html>
