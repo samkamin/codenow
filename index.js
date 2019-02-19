@@ -1,5 +1,4 @@
 function markdone(cb) {
-   // 'row' refers to the <tr> that includes this 
    var row = cb.closest("tr");
    row.classList.toggle("done");
 }
