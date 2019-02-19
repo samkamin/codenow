@@ -30,6 +30,6 @@ in turn called `alert`, which is a function built into JavaScript that pops up a
 in this case containing `Important message`.  When the clickbox was clicked, the screen
 popped up:
 
-![Screenshot1](ScreenShot1.png)
+![Drop-down message box](screenshot1.png)
 
 
