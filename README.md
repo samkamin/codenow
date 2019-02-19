@@ -48,7 +48,7 @@ intermediate feature, a simpler form of 2.  I'm going to explain each.
 We'll mostly be looking at the JavaScript file `index.js`, so first let's go through the HTML and
 CSS files; they don't contain anything you haven't seen, so this will be quick.
 
-# Setup - HTML and CSS
+## Setup - HTML and CSS
 
 For the HTML, I just wrote a simple table, just like the ones you already have.  Each row contains
 the checkbox, with the attribute `onclick=markdone(this)`.  This is just like what we did on Sunday,
@@ -131,4 +131,48 @@ containing something like this:
 Note that the first `tr` node has the `done` class, just as if we had entered it by hand in
 the HTML.  The second one is just the way it was in the HTML, with no class attribute.
 
+## Adding a new to-do
 
+Adding a new to-do is not an action associated with a single row, but rather with the entire
+page.  So we put the button for that separately, outside of the table.  When we click it, it
+invokes a JavaScript function `addtodo`.  Thus, in the bottom of the HTML, we have:
+
+```
+<button onclick="addtodo()">Add todo</button>
+```
+
+Note that we don't use `addtodo(this)`, but just `addtodo`.  We don't need to tell the JavaScript
+function which button we clicked (which is what `this` would be), because the place we want to
+add the new row has nothing to do with this button.  Instead, the `addtodo` function will have to
+somehow find the `table` node - there is only one on this page - and add to that.
+
+We divided this task into two steps for ease of explanation.  First we'll look at `addsillytodo`,
+which really isn't useful except for this explanation.  Then we'll look at `addtodo`, which is the
+real thing.
+
+### Finding the table and adding a row
+
+Here is `addsillytodo`:
+
+```
+function addsillytodo() {
+    var todolist = $("table");
+    todolist.append('<tr><td>a</td><td>b</td><td><input type="checkbox" onclick="markdone(this)"></tr>');
+}
+```
+
+Again, the first line of this finds a node that we need and gives it a name.  Here, the node is the
+table itself.  There is only one table in this html, so we can just say "find the node with tag `table`";
+JavaScript notation `$("table")` does just that.
+
+Once we have that, we call the built-in `append` function, which says "add this bunch of html inside the
+`todolist` node, i.e. inside the table.  The "bunch of html" looks exactly like the table rows that are
+already in the table, but with nonsense task "a" and pomodoro count "b".
+
+Click on `add silly todo` and the page will look like this:
+
+<img src="html3.png" height=200>
+
+Inspecting the html, we see:
+
+<img src="inspect3.png" height=300>
