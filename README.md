@@ -2,11 +2,19 @@
 
 ## Code relating to weekend 1 - 2/16-18
 
-Guys, I wanted to fill in some stuff that we *almost* got to, namely the
-JavaScript.  If you recall, the last thing we got running was a script
+Guys, I wanted to fill in some stuff that we *almost* got to on Sunday,
+namely the JavaScript.  You might want to read this as a review, or just
+if you're curious how that would have gone.  If you want to try adding
+this to your own pages, I have to warn you
+that JavaScript is pretty tricky, and simply copying what I've done here
+may not work exactly right on your pages.  But if you're feeling
+ambitious go for it.  Remember that Google is your friend.  If you get
+stuck, write to me and I'll see if I can help. 
+
+If you recall, the last thing we got running was a script
 that popped up (or rather, dropped down) a message when you clicked on
-a checkbox.  You should still have this in your code on Cloud9 but anyway
-here is what was involved:
+a checkbox.  You should still have this in your code on Cloud9 but to
+remind you, here's what we did:
 
 1. In `index.html`, we added a checkbox in our table rows, with this line:
 
@@ -43,9 +51,12 @@ discuss that, but I've put it in here.
 
 The github repo you're in now has, in addition to this `README` file, three files: `index.html`,
 `index.css`, and `index.js`.  It contains code for both of the above features, and also an
-intermediate feature, a simpler form of 2.  I'm going to explain each.
+intermediate feature, a simpler form of (2).  I'm going to explain each.  (You can copy these
+files, or clone this entire repo in Cloud9, so you can run this stuff, but probably you'll just
+want to copy the new parts and add them into your pages.  Anyway, the point is that you have
+access to those files.)
 
-We'll mostly be looking at the JavaScript file `index.js`, so first let's go through the HTML and
+We'll mostly be looking at the JavaScript file `index.js`, but first let's go through the HTML and
 CSS files; they don't contain anything you haven't seen, so this will be quick.
 
 ## Setup - HTML and CSS
@@ -74,16 +85,15 @@ So, to mark a to-do as done, we just need to add `class="done"` to the `tr` tag;
 click on the checkbox, the JavaScript function (`markdone`) needs to find the `tr` tag containing
 this checkbox and add `class="done"`.
 
-A specific occurrence of a tag in an html document is called a "node".  In `index.html`, there are
-two `tr` nodes, and we need to find the one that contains the clicked node.  (When we get to adding
-new to-dos, we will be adding more `tr` nodes; like the current two, each will have three `td` nodes
-within it, and the third of these `td` nodes will have a clickbox.)
+(*Terminology*: A specific occurrence of a tag in an html document is called a "node".  A "tr node"
+is a node with the `tr` tag; in our initial `index.html`, we have two `tr` nodes. When we get to adding
+new to-dos, we will be adding more rows to the table, meaning we'll add more `tr` nodes.)
 
 The `onclick` attribute says `onclick=markdone(this)`, which means, "when this box is clicked, call
-the `markdone` function, and pass this clickbox as an argument."  Just like a mathematical function
+the `markdone` function, and pass *this clickbox node* as an argument."  Just like a mathematical function
 like sin or square-root has an argument, JavaScript functions also have them.  The `markdone` function
-will look for a `tr` node containing a clickbox node somewhere within it, but it can't do anything unless
-we tell it which clickbox node we're talking about.  In an HTML tag, `this` refers to that node.
+will look for the `tr` node containing a given clickbox node, but it can't do anything unless
+we tell it which clickbox node we're talking about.  In the HTML tag, `this` refers to that node.
 
 Let's look at the `markdone` function in `index.js`.  It has divided the work into two steps, each of
 which is accomplished by calling built-in JavaScript functions:
@@ -102,7 +112,7 @@ somewhat descriptive of what the name refers to.)  The two steps in this functio
 
 1. Find the containing `tr` node.  We do this by calling the built-in function `closest`, which
 looks at the parents and grandparents, and so on, of the `cb` node until it finds one that has
-tag `tr`.  We call that node `row` (again, an arbitrary name that we've chosen descriptively).
+tag `tr`.  We call that node `row` (again, a name that we've chosen to be descriptive).
 (`closest` really has two arguments - the node it is starting from, in this case `cb`,
 and the tag it is looking for, `"tr"`.  But instead of calling `closest(cb, "tr")`, we use this
 "dot notation" for cb; it would unfortunately be too much for us to explain this distinction here;
@@ -112,7 +122,7 @@ always clear from examples how they are called.)
 2. Now that we have the `tr` node, we want to add `class = "done"`.  We do that by using two more
 built-in JavaScript functions: `row.classList` gives the class attribute of the `row` node (which in
 this case is empty), and `toggle` says add the class `done` to that list.  (Actually, it "toggles" it;
-if the row already has `class="done"`, it removes it.)
+if the row already had `class="done"`, it would remove it.)
 
 The todo list currently looks like this:
 
@@ -130,6 +140,12 @@ containing something like this:
 
 Note that the first `tr` node has the `done` class, just as if we had entered it by hand in
 the HTML.  The second one is just the way it was in the HTML, with no class attribute.
+
+(*Aside*:  The reason JavaScript uses `classList` is that the class attribute in a tag can
+contain multiple classes, e.g. `class="done highpriority"`.  Then the CSS rules for the `done`
+class (`.done { ... }`) and those for the `highpriority` class (`.highpriority { ... }`)
+would both be applicable to that node.  Thus, the `class` attribute really contains a *list* of
+classes.)
 
 ## Adding a new to-do
 
@@ -161,12 +177,12 @@ function addsillytodo() {
 }
 ```
 
-Again, the first line of this finds a node that we need and gives it a name.  Here, the node is the
+As for `markdone`, the first line finds a node that we need and gives it a name.  Here, the node is the
 table itself.  There is only one table in this html, so we can just say "find the node with tag `table`";
 JavaScript notation `$("table")` does just that.
 
 Once we have that, we call the built-in `append` function, which says "add this bunch of html inside the
-`todolist` node, i.e. inside the table.  The "bunch of html" looks exactly like the table rows that are
+`todolist` node," i.e. inside the table.  The "bunch of html" looks exactly like the table rows that are
 already in the table, but with nonsense task "a" and pomodoro count "b".
 
 Click on `add silly todo` and the page will look like this:
@@ -228,8 +244,8 @@ few lines are little hard to understand, but first let me show you the result:
 <img src="html5.png" height=200>
 
 Again, the whole job here is to create some HTML that looks like what we entered by hand.  The idea of
-these last few lines is to construct that by putting together pieces of the HTML to form the entire
-chunk.  The plus signs are what we used to put the chunks together; technically, `+` means "concatenate
+these last few lines is to construct that by putting together pieces of HTML to form the entire
+chunk.  The plus signs are what we use to put the chunks together; technically, `+` means "concatenate
 strings".  Here, we're concatenating the following strings:
 
 ```
@@ -257,10 +273,10 @@ functions that do different things.  But hopefully you can see that there is a p
 logic to what we're doing when we use JavaScript in web pages.
 
 JavaScript is a *very* widely used language; pretty much every web page you visit has JavaScript
-running in it, probably very complicated JavaScript.
+running in it.
 
 But there is one thing that our JavaScript will
-never do: remember the tasks we've added.  Whatever we add or mark as done is only added or marked
+never do: remember the tasks we've added *permanently*.  Whatever we add or mark as done is only added or marked
 *in this HTML session*; if we close the window or just reload the page, it will all be lost.
 That is because the JavaScript runs only in our browser - on the "client side", in internet lingo -
 and never saves the data that are added.
