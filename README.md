@@ -176,3 +176,96 @@ Click on `add silly todo` and the page will look like this:
 Inspecting the html, we see:
 
 <img src="inspect3.png" height=300>
+
+*Subtle point*: You'll note in the new html we added, we used both single and double quotes: single
+quotes around the whole thing and double quotes in the places where all our table rows have double
+quotes.  In JavaScript, single and double quotes are equivalent and either can be used, but single
+quotes only match with single quotes and double quotes only with double quotes.  If we had written
+the html with only double quotes:
+
+```
+"<tr><td>a</td><td>b</td><td><input type="checkbox" onclick="markdone(this)"></tr>"
+```
+
+we would have a problem:  the double quote following `type=` would match the double quote at the
+beginning of the line, and the `checkbox` would just be hanging there not quoted at all.  Using
+single quotes on the outside solves this: the only match for the single quote at the start of the
+line is the single quote at the end of the line, and everything within is included just as is.
+(If for some reason we also needed to have a single quote *inside* the text, we would have another
+problem, but luckily that doesn't happen here.)
+
+### Adding a new to-do
+
+The real to-do button adds a table row just like the silly one, but it asks the user what the to-do
+is and how many pomodoros it needs.  We first need to use a built-in JavaScript function to get input
+from the user.  Then we need to construct the HTML code that includes that user input.  The goal as
+before is to make the HTML row look just like the existing rows.  Here is `addtodo`:
+
+```
+function addtodo() {
+    var todo = prompt("what's the job, boss? ");
+    var poms = prompt("how many pomodoros?");
+    var todolist = $("table");
+    todolist.append("<tr><td>" + todo + "</td>"
+                    + "<td>" + poms + " poms </td>"
+                    + '<td><input type="checkbox" onclick="markdone(this)"></tr>');
+}
+```
+
+It is a lot longer than the silly one - that's why we did the silly one first.  The first two lines
+use the JavaScript function `prompt` to get input from the user.  It will give the two prompts one at
+a time.  When the `Add todo` button is clicked the first thing that happens is the drop-down dialog
+shows up:
+
+<img src="html4.png" height=200>
+
+You can enter a task, and then it will pop up another dialog and you can enter a number.  These two
+things will be given names `todo` and `poms`, respectively.  I entered "mow the lawn" and "5", so we
+can think of `todo` as being the same as `"mow the lawn"` and `poms` as the same as `"5"`.  Now we
+want to include those strings in a new row, again looking just like our existing rows.  The last
+few lines are little hard to understand, but first let me show you the result:
+
+<img src="html5.png" height=200>
+
+Again, the whole job here is to create some HTML that looks like what we entered by hand.  The idea of
+these last few lines is to construct that by putting together pieces of the HTML to form the entire
+chunk.  The plus signs are what we used to put the chunks together; technically, `+` means "concatenate
+strings".  Here, we're concatenating the following strings:
+
+```
+<tr><td>
+mow the lawn  -- remember, todo is the same as "mow the lawn"
+</td>
+<td>
+5             -- remember, poms is the same as "5"
+ poms </td>   -- note the space at the start of this string
+<td><input type="checkbox" onclick="markdone(this)"></tr>
+```
+
+Concatenating these all gives:
+
+```
+<tr><td>mow the lawn</td><td>5 poms </td><td><input type="checkbox" onclick="markdone(this)"></tr>
+```
+
+which is exactly what we want to add to the table.
+
+# Wrapping up
+
+Yeah, this is complicated.  There is a lot to learn about JavaScript notation and all the built-in
+functions that do different things.  But hopefully you can see that there is a pretty straightforward
+logic to what we're doing when we use JavaScript in web pages.
+
+JavaScript is a *very* widely used language; pretty much every web page you visit has JavaScript
+running in it, probably very complicated JavaScript.
+
+But there is one thing that our JavaScript will
+never do: remember the tasks we've added.  Whatever we add or mark as done is only added or marked
+*in this HTML session*; if we close the window or just reload the page, it will all be lost.
+That is because the JavaScript runs only in our browser - on the "client side", in internet lingo -
+and never saves the data that are added.
+
+In the second weekend, you will learn about how to overcome this very important shortcoming.  There,
+you will write to code to run on the "server side."  It will be able to take the inputs - the text
+we added for new tasks, the checkbox clicks - and remember them in a database "in the cloud."  That
+way, the data will never be lost and can be accessed at any time from anywhere.
